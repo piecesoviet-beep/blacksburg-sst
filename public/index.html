@@ -275,7 +275,7 @@ function fixOM(){if(OM){F[1].bot=false;F[1].spm=F[1].pwm=1}}
 const dec=m=>({l:m&1,r:m&2,j:m&4,p:m&8,k:m&16,d:m&32,s:m&64});
 function netInputs(p,b){const D=5,r=roundNo,k=nk,K=x=>r+':'+x;
  if(!OM.sent[K(k)]){OM.sent[K(k)]=1;const m=lp|(keys.KeyA?1:0)|(keys.KeyD?2:0);lp=0;OM.loc[K(k+D)]=m;net.send({t:'in',k:k+D,r,m})}
- const lm=k<D?0:OM.loc[K(k)],rm=k<D?0:OM.rem[K(k)];if(rm===undefined)return false;
+ const lm=k<D?0:OM.loc[K(k)];let rm=k<D?0:OM.rem[K(k)];if(rm===undefined){OM.wait=OM.wait||{};OM.wait[k]=(OM.wait[k]||0)+1;if(OM.wait[k]<12)return false;rm=0;}
  delete OM.loc[K(k)];delete OM.rem[K(k)];delete OM.sent[K(k)];nk++;
  p.i=dec(OM.role?rm:lm);b.i=dec(OM.role?lm:rm);return true}
 function endOnline(){net.send({t:'done'});OM=null;matchOnline=false;go('lobby')}
